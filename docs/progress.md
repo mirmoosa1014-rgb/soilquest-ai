@@ -31,3 +31,10 @@ A small UI correction made after recovery ensures switching field family never r
 This is a bounded synthetic research prototype, not a physically validated soil transport simulator or chemical detector. There is no real sample collection, hardware integration, real-field calibration or deployed multi-user service. The Gaussian posterior assumptions and fixed noise are simplified, narrow hotspots can be missed, and eight held-out fields per ceiling are too few for broad performance claims. Browser request abort cancels obsolete UI work; bounded server computations are short and do not implement background-job cancellation.
 
 No Git repository was created, no commit made, and no push performed. Publication awaits user confirmation. The recovered copy is in the active workspace; the disconnected original Mac Coding Projects folder has not been changed.
+
+
+## Warm Documentary interface redesign — 2026-10-26
+
+The release copy now has a field-notebook layout, using upstream Warm Documentary CSS and finite fade/lower-third clips. The sidebar, promotional hero, rounded cards and green glow were replaced by a geographic reconstruction, margin notes, specimen ledger, surface study and separate evaluator notes. Reduced motion disables all decorative animation and automatic replay while preserving manual acquisition. Scientific source, model metadata, observations, numeric results and tests were not modified; no training or benchmark was rerun. See `design.md` and `THIRD_PARTY_NOTICES.md`.
+
+TypeScript/Vite build succeeds locally. The Mac loopback server starts, but headless Chrome exits under this execution environment. Updated screenshots, browser assertions and visual inspection are not claimed complete locally. Three browser scenarios and a Linux GitHub Actions workflow are provided to run acquisition/replay/reveal/rotation/export/policy/input-limit checks, 390px reflow and reduced motion, capturing authentic screenshots as workflow artifacts. No commit, push, deployment or repository-visibility change was made during this redesign.
