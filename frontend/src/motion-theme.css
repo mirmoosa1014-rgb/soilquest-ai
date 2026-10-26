@@ -1,0 +1,32 @@
+/* motionstyle_documentary — Warm Documentary */
+:root {
+  --bg: #140E0A;
+  --bg-raised: #231710;
+  --surface: #1C140F;
+  --ink: #F6EFE4;
+  --text: #F3EBDF;
+  --text-dim: #B6A494;
+  --primary: #E0A15A;
+  --primary-light: #F0C48A;
+  --primary-dark: #B7793A;
+  --secondary: #8C3A2F;
+  --accent: #F3E6D4;
+  --danger: #A33B32;
+  --ok: #7E9A74;
+  --info: #C4A484;
+  --radius: 2px;
+  --border-width: 0px;
+  --border-color: #E0A15A;
+  --shadow: none;
+  --blur: 0px;
+  --font-display: Iowan Old Style, Palatino, Georgia, serif;
+  --font-body: Iowan Old Style, Palatino, Georgia, serif;
+  --font-mono: SF Mono, ui-monospace, Menlo, Consolas, monospace;
+  --stagger: 0s;
+  --duration-fade-in: 0.6s;
+  --ease-fade-in: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-ken-burns: 8s;
+  --ease-ken-burns: linear;
+  --duration-lower-third: 0.7s;
+  --ease-lower-third: cubic-bezier(0.16, 1, 0.3, 1);
+}

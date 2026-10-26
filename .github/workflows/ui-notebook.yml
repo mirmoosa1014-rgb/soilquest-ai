@@ -1,0 +1,40 @@
+name: Verify and photograph field notebook
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'design/**'
+  pull_request:
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/ui-notebook.yml'
+permissions:
+  contents: read
+jobs:
+  notebook:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: python -m venv .venv && .venv/bin/python -m pip install -r requirements.lock
+      - run: npm ci && npm run build && npx playwright install --with-deps chromium
+        working-directory: frontend
+      - run: npm run test:browser
+        working-directory: frontend
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: soilquest-notebook-browser-evidence
+          path: |
+            frontend/artifacts/*.png
+            frontend/test-results/
+          if-no-files-found: warn
+          retention-days: 14
