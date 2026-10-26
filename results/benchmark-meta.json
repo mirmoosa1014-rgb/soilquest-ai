@@ -1,0 +1,13 @@
+{
+  "episodes": 96,
+  "seconds": 1.2547383308410645,
+  "mode": "full",
+  "threshold_mgkg": 50,
+  "travel_budget_m": 650,
+  "seeds": [
+    41,
+    42,
+    43,
+    44
+  ]
+}

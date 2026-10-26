@@ -1,0 +1,11 @@
+# Model card
+
+**Model:** Gaussian-process regression with squared-exponential kernel, fixed prior mean 18 mg/kg, amplitude 45 mg/kg and observation-noise SD 3 mg/kg. Length scale is selected from 10, 18 and 28 m by unobserved-cell MSE over 18 synthetic training fields: smooth, multiple and background families, seeds 0–5. The saved selected length scale is 18 m. This is training-only hyperparameter selection, with no separate validation estimate claimed.
+
+**Inputs:** sampled x/y coordinates in metres and noisy concentration in synthetic mg/kg. **Outputs:** concentration mean and latent posterior standard deviation at each grid cell. The posterior is recomputed after each acquired measurement with Cholesky factorization; it uses no hidden concentrations. Model metadata and feature schema are in `models/hyperparameters.json`, a safe JSON artifact rather than a pickled estimator. The no-observation fallback is the prior mean and SD; the UI normally starts with one observation.
+
+**Held out:** all narrow and directional field families; benchmark seeds 41–44 also do not overlap training. No benchmark outcomes select hyperparameters. There is no trained neural policy: the balanced heuristic combines posterior uncertainty and predicted hotspot excess with a travel discount. The GP is the learned component.
+
+**Uncertainty:** nominal latent intervals are mean ±1.96 SD; empirical coverage is measured against noiseless simulator truth on unobserved traversable cells. Coverage is not chemical-identification confidence and is not calibrated to real soils. Mean clipping at zero makes the displayed posterior a truncated approximation rather than an exact Gaussian posterior near zero. Noise clipping similarly deviates slightly from the Gaussian observation assumption. High coverage can coexist with very poor hotspot recall.
+
+**Sources consulted during implementation:** [Rasmussen & Williams, Gaussian Processes for Machine Learning, chapter 2](https://gaussianprocess.org/gpml/chapters/RW2.pdf), for GP conditioning; [SciPy cho_solve documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.cho_solve.html), for stable linear solves. Field shapes, policy weights and costs are explicit project assumptions.

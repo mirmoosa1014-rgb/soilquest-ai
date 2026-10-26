@@ -1,0 +1,23 @@
+import {test,expect} from '@playwright/test';
+test('survey, policy replay, ground-truth reveal, 3D rotation and export',async({page})=>{
+ await page.goto('http://127.0.0.1:8104');
+ await expect(page.getByRole('heading',{name:'Find more. Sample smarter.'})).toBeVisible();
+ await expect(page.getByRole('img',{name:'Posterior concentration map'})).toBeVisible();
+ await page.getByRole('button',{name:'+ Acquire sample'}).click();
+ await expect(page.getByText('OBSERVATION 9 / 20')).toBeVisible();
+ await page.getByRole('button',{name:'Reveal evaluator map'}).click();
+ await expect(page.getByRole('img',{name:'Evaluator-only synthetic ground truth'})).toBeVisible();
+ await page.getByRole('slider',{name:'Rotate 3D surface'}).fill('1.21');
+ const download=page.waitForEvent('download');await page.getByRole('button',{name:'↓ Export complete audit JSON'}).click();expect((await download).suggestedFilename()).toBe('soilquest-audit.json');
+ await page.screenshot({path:'../docs/images/workbench.png',fullPage:true});
+ await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+ await page.screenshot({path:'../docs/images/workbench-hero.png',fullPage:false});
+ await page.getByLabel('Sampling policy').selectOption('grid');
+ await expect(page.getByText('OBSERVATION 9 / 20')).toBeVisible();
+ await page.setViewportSize({width:390,height:844});
+ await expect(page.getByRole('heading',{name:'Find more. Sample smarter.'})).toBeVisible();
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBeTruthy();
+ await page.getByLabel('Sample ceiling').fill('1');
+ await page.getByLabel('Field family').selectOption('smooth');
+ await expect(page.getByText('OBSERVATION 1 / 1')).toBeVisible();
+});

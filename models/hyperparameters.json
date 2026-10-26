@@ -1,0 +1,43 @@
+{
+  "length_m": 18,
+  "mean": 18,
+  "amplitude": 45,
+  "noise_mgkg": 3,
+  "training_families": [
+    "smooth",
+    "multiple",
+    "background"
+  ],
+  "training_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "heldout_families": [
+    "narrow",
+    "directional"
+  ],
+  "feature_schema": [
+    "x_m",
+    "y_m",
+    "observed_concentration_mgkg"
+  ],
+  "training_mse": 52.738005855214176,
+  "candidate_length_scores": [
+    {
+      "length_m": 10,
+      "mse": 417.73200660487623
+    },
+    {
+      "length_m": 18,
+      "mse": 52.738005855214176
+    },
+    {
+      "length_m": 28,
+      "mse": 66.24256393839553
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "python": "3.12.14",
+  "numpy": "2.3.5",
+  "scipy": "1.17.0",
+  "matplotlib": "3.10.8",
+  "backend_tests_passed": 12,
+  "browser_tests_passed": 1,
+  "frontend_build": "passed",
+  "clean_python_install": "passed",
+  "npm_ci": "passed",
+  "quick_episodes": 8,
+  "full_episodes": 96,
+  "source_provenance": "reconstructed from retained authored transcript; outputs regenerated",
+  "github_publication": "not performed; pending user confirmation"
+}
