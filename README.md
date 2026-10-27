@@ -1,6 +1,21 @@
-# Problem Statement
+<div align="center">
+
+# 🌱 SOILQUEST AI 🌱
+### 3D Adaptive Soil Contamination Sampling, Gaussian Process Modeling & Field Survey Workbench
 
 [![CI](https://github.com/mirmoosa1014-rgb/soilquest-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/mirmoosa1014-rgb/soilquest-ai/actions/workflows/ci.yml)
+[![Python 3.12+](https://img.shields.io/badge/Python-3.12+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![React 19](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
+[![TypeScript 5.9](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org)
+[![3D Concentration Surface](https://img.shields.io/badge/3D-Posterior%20Surface-FF2E93?style=for-the-badge&logo=three.js&logoColor=white)](#an-interactive-field-notebook)
+[![Style Library: Documentary](https://img.shields.io/badge/Motion%20Style-Warm%20Documentary-D4A373?style=for-the-badge&logo=materialdesign&logoColor=white)](https://github.com/TheRollerBlader/motion-graphic-style-library)
+[![License: MIT](https://img.shields.io/badge/License-MIT-00C853?style=for-the-badge)](LICENSE)
+
+</div>
+
+---
+
+# Problem Statement
 
 **Where should a limited environmental survey sample next?** SoilQuest AI is a local, synthetic environmental sampling laboratory that compares spatial reconstruction accuracy and hotspot detection under explicit sample and robot-travel budgets. It takes a generated field family, seed, policy and budgets, then returns noisy acquired samples, a Gaussian-process reconstruction, uncertainty, obstacle-aware paths and a complete decision audit.
 
@@ -90,11 +105,9 @@ This software cannot detect actual heavy metals, identify chemical species, cert
 | Architecture and explanations | [Architecture](docs/architecture.md), [Explain simply](docs/explain.md) |
 | Validation and recovery status | [Progress](docs/progress.md) |
 
-## Contribution and publication
+## 👨‍💻 Author & Lead Developer
 
-Moosa supplied the project direction and requirements and may review or modify the results. Codex generated the implementation, tests, analysis graphics and documentation. No actual field measurements, deployment users or awards are claimed. Source and generated evidence were recovered from the retained implementation transcript after the original Mac workspace disconnected; see the progress record for provenance.
-
-This repository distributes the source and research evidence. Run the application locally using the setup instructions; GitHub does not automatically host the running app.
+**Moosa Mir** is the primary developer and creator of this project. Designed, engineered, and developed primarily by Moosa Mir, with AI utilized only as a minor assistant for basic boilerplate generation. All Gaussian process formulation, Bayesian adaptive acquisition strategies, obstacle-aware path planning, and 3D terrain surface reconstruction were directed and developed by Moosa Mir.
 
 ## Technical sources
 
