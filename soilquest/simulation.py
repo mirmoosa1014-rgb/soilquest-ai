@@ -5,8 +5,9 @@ from .policy import choose,POLICIES
 
 def run(seed=41,family='narrow',policy='balanced',budget=20,travel_budget=650,n=18):
     if policy not in POLICIES:raise ValueError('unknown policy')
-    if not isinstance(seed,int) or not 0<=seed<=100000:raise ValueError('seed must be 0..100000')
-    if not 1<=budget<=40 or not 0<=travel_budget<=2000:raise ValueError('invalid budget')
+    if type(seed)!=int or not 0<=seed<=100000:raise ValueError('seed must be 0..100000')
+    if type(budget)!=int or not 1<=budget<=40:raise ValueError('sample budget must be an integer from 1 to 40')
+    if isinstance(travel_budget,bool) or not isinstance(travel_budget,(int,float)) or not 0<=travel_budget<=2000:raise ValueError('invalid travel budget')
     field=generate(seed,family,n); coords=field['coords']; sampler=Sampler(field); audit=[]; route=[0]; distance=0.;sampler.sample(0)
     while len(sampler.records)<budget:
         mean,std=predict(coords,sampler.records)

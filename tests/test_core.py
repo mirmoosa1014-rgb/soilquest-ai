@@ -43,6 +43,17 @@ def test_budget_no_duplicate_paths_audit_replay(policy):
 def test_zero_travel_budget():
  r=run(travel_budget=0);assert r['metrics']['samples']==1;assert r['metrics']['travel_m']==0
 
+@pytest.mark.parametrize('budget',[1.5,True,'3',None])
+def test_sample_budget_requires_integer(budget):
+ with pytest.raises(ValueError):run(budget=budget)
+
+@pytest.mark.parametrize('travel',[True,'650',None,float('nan'),float('inf')])
+def test_invalid_travel_budget(travel):
+ with pytest.raises(ValueError):run(travel_budget=travel)
+
+def test_boolean_seed_rejected():
+ with pytest.raises(ValueError):run(seed=True)
+
 def test_policies_receive_no_truth():
  assert 'truth' not in inspect.signature(choose).parameters
  assert set(inspect.signature(choose).parameters)=={'policy','coords','blocked','n','records','mean','std','remaining','seed'}
