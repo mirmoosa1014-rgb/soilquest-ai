@@ -4,7 +4,7 @@ FAMILIES={'train':['smooth','multiple','background'],'test':['narrow','direction
 
 def generate(seed=41,family='narrow',n=18):
     if family not in sum(FAMILIES.values(),[]): raise ValueError('unknown field family')
-    if not 10<=n<=24: raise ValueError('grid size must be 10..24')
+    if isinstance(n,(bool,np.bool_)) or not isinstance(n,(int,np.integer)) or not 10<=n<=24: raise ValueError('grid size must be an integer from 10 to 24')
     rng=np.random.default_rng(seed); x,y=np.meshgrid(np.linspace(0,100,n),np.linspace(0,100,n)); z=np.full_like(x,12.)
     count=3 if family=='multiple' else 1
     for _ in range(count):
@@ -19,7 +19,7 @@ def generate(seed=41,family='narrow',n=18):
 class Sampler:
     def __init__(self,field): self._field=field; self.records=[]
     def sample(self,index):
-        if not isinstance(index,(int,np.integer)) or not 0<=index<len(self._field['truth']): raise ValueError('invalid sample cell')
+        if isinstance(index,(bool,np.bool_)) or not isinstance(index,(int,np.integer)) or not 0<=index<len(self._field['truth']): raise ValueError('invalid sample cell')
         if index in [r['index'] for r in self.records]: raise ValueError('duplicate sample')
         if self._field['obstacles'][index]: raise ValueError('blocked cell')
         # Cell-indexed noise gives identical potential measurements to all policies.

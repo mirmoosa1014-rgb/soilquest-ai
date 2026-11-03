@@ -20,6 +20,19 @@ def test_sampler_boundary_and_noise():
  with pytest.raises(ValueError):a.sample(0)
  with pytest.raises(ValueError):a.sample(int(np.where(f['obstacles'])[0][0]))
 
+@pytest.mark.parametrize('n',[10.5,True,'18',None])
+def test_field_rejects_invalid_grid_dimensions(n):
+ with pytest.raises(ValueError):generate(n=n)
+
+@pytest.mark.parametrize('index',[True,False,np.bool_(True),1.5,'1',None])
+def test_sampler_rejects_invalid_cell_types(index):
+ s=Sampler(generate())
+ with pytest.raises(ValueError):s.sample(index)
+ assert s.records==[]
+
+def test_sampler_accepts_numpy_cell_index():
+ assert Sampler(generate()).sample(np.int64(0))['index']==0
+
 def test_model_has_no_truth_and_only_observed_values():
  assert 'truth' not in inspect.signature(predict).parameters
  f=generate();s=Sampler(f);s.sample(0);m,sd=predict(f['coords'],s.records)
