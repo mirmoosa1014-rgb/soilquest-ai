@@ -11,6 +11,13 @@ def predict(coords,records,params=None):
         values=np.array([params[k] for k in ('length_m','mean','amplitude','noise_mgkg')],dtype=float)
         if values.shape!=(4,) or not np.isfinite(values).all() or values[0]<=0 or values[2]<=0 or values[3]<0:raise ValueError('invalid GP parameters')
     except (KeyError,TypeError,ValueError) as exc:raise ValueError('finite GP parameters with positive length/amplitude and nonnegative noise required') from exc
+    params=dict(zip(('length_m','mean','amplitude','noise_mgkg'),values))
+    indices=[]
+    for record in records:
+        index=record.get('index');value=record.get('value')
+        if isinstance(index,(bool,np.bool_)) or not isinstance(index,(int,np.integer)) or not 0<=index<len(coords) or index in indices:raise ValueError('unique in-range integer observation indices required')
+        if not isinstance(value,(int,float,np.integer,np.floating)) or isinstance(value,(bool,np.bool_)) or not np.isfinite(value):raise ValueError('finite numeric observations required')
+        indices.append(index)
     if not records:return np.full(len(coords),params['mean']),np.full(len(coords),params['amplitude'])
     indices=[r['index'] for r in records]; points=coords[indices]; values=np.array([r['value'] for r in records]); length=params['length_m']; amp=params['amplitude']
     def kernel(a,b):return amp**2*np.exp(-np.sum((a[:,None]-b[None,:])**2,axis=2)/(2*length**2))
