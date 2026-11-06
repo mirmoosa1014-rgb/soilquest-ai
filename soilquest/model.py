@@ -7,6 +7,10 @@ MODEL=Path(__file__).resolve().parents[1]/'models/hyperparameters.json'
 
 def predict(coords,records,params=None):
     if params is None: params=json.loads(MODEL.read_text())
+    try:
+        values=np.array([params[k] for k in ('length_m','mean','amplitude','noise_mgkg')],dtype=float)
+        if values.shape!=(4,) or not np.isfinite(values).all() or values[0]<=0 or values[2]<=0 or values[3]<0:raise ValueError('invalid GP parameters')
+    except (KeyError,TypeError,ValueError) as exc:raise ValueError('finite GP parameters with positive length/amplitude and nonnegative noise required') from exc
     if not records:return np.full(len(coords),params['mean']),np.full(len(coords),params['amplitude'])
     indices=[r['index'] for r in records]; points=coords[indices]; values=np.array([r['value'] for r in records]); length=params['length_m']; amp=params['amplitude']
     def kernel(a,b):return amp**2*np.exp(-np.sum((a[:,None]-b[None,:])**2,axis=2)/(2*length**2))
