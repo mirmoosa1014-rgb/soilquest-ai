@@ -6,6 +6,8 @@ from scipy.linalg import cho_factor,cho_solve
 MODEL=Path(__file__).resolve().parents[1]/'models/hyperparameters.json'
 
 def predict(coords,records,params=None):
+    coords=np.asarray(coords,dtype=float)
+    if coords.ndim!=2 or coords.shape[1]!=2 or not np.isfinite(coords).all():raise ValueError('coordinates must be finite two-dimensional points')
     if params is None: params=json.loads(MODEL.read_text())
     try:
         values=np.array([params[k] for k in ('length_m','mean','amplitude','noise_mgkg')],dtype=float)
