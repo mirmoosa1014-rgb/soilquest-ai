@@ -24,7 +24,11 @@ def predict(coords,records,params=None):
     indices=[r['index'] for r in records]; points=coords[indices]; values=np.array([r['value'] for r in records]); length=params['length_m']; amp=params['amplitude']
     def kernel(a,b):return amp**2*np.exp(-np.sum((a[:,None]-b[None,:])**2,axis=2)/(2*length**2))
     cov=kernel(points,points)+np.eye(len(points))*params['noise_mgkg']**2
-    fac=cho_factor(cov); k=kernel(coords,points)
+    try:fac=cho_factor(cov)
+    except np.linalg.LinAlgError:
+        # Coincident zero-noise observations can make an otherwise valid kernel singular.
+        fac=cho_factor(cov+np.eye(len(points))*max(amp**2,1.)*1e-10)
+    k=kernel(coords,points)
     mean=params['mean']+k@cho_solve(fac,values-params['mean'])
     var=amp**2-np.einsum('ij,ji->i',k,cho_solve(fac,k.T))
     return np.maximum(0,mean),np.sqrt(np.maximum(var,1e-8))
