@@ -7,7 +7,7 @@ const ready = async (page: import('@playwright/test').Page, step = 8, ceiling = 
 };
 
 test('documentary notebook: acquire, replay, policy, reveal, rotation, export and bounds', async ({ page }) => {
-  await page.goto('http://127.0.0.1:8104');
+  await page.goto('http://127.0.0.1:18104');
   await expect(page.getByRole('heading', { name: 'A record of the unseen.' })).toBeVisible();
   await ready(page);
   await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(20, 14, 10)');
@@ -56,7 +56,7 @@ test('documentary notebook: acquire, replay, policy, reveal, rotation, export an
 
 test('390px field notebook reflows without page overflow', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('http://127.0.0.1:8104');
+  await page.goto('http://127.0.0.1:18104');
   await ready(page);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();
   await expect(page.getByLabel('Field family', { exact: true })).toBeVisible();
@@ -70,7 +70,7 @@ test('390px field notebook reflows without page overflow', async ({ page }) => {
 
 test('reduced motion: no decorative animation, no autoplay, manual replay preserved', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('http://127.0.0.1:8104');
+  await page.goto('http://127.0.0.1:18104');
   await ready(page);
   await expect(page.locator('.notebook-heading')).toHaveCSS('animation-name', 'none');
   await expect(page.locator('.lower-third')).toHaveCSS('animation-name', 'none');
@@ -82,4 +82,29 @@ test('reduced motion: no decorative animation, no autoplay, manual replay preser
   await ready(page, 3);
   await expect(page.locator('#ledger tbody tr')).toHaveCount(3);
   await page.screenshot({ path: 'artifacts/notebook-reduced-motion.png', fullPage: true, animations: 'disabled' });
+});
+
+test('audit export stays disabled while a replacement survey is pending or failed', async ({ page }) => {
+  await page.goto('http://127.0.0.1:18104');
+  await ready(page);
+  let release!: () => void;
+  const pending = new Promise<void>(resolve => { release = resolve; });
+  await page.route('**/api/survey?**', async route => {
+    const url = new URL(route.request().url());
+    if (url.searchParams.get('seed') === '42' && url.searchParams.get('budget') === '8') {
+      await pending;
+      await route.fulfill({ status: 503, contentType: 'application/json', body: '{}' });
+    } else await route.continue();
+  });
+  await page.getByLabel('Field seed', { exact: true }).fill('42');
+  const exportButton = page.getByRole('button', { name: 'Export complete audit ↓' });
+  await expect(exportButton).toBeDisabled();
+  await expect(page.locator('.ledger-note .micro-note')).toContainText('seed 41');
+  release();
+  await expect(page.getByRole('alert').filter({ hasText: 'Survey request failed' })).toBeVisible();
+  await expect(exportButton).toBeDisabled();
+  await page.getByLabel('Field seed', { exact: true }).fill('43');
+  await ready(page);
+  await expect(exportButton).toBeEnabled();
+  await expect(page.locator('.ledger-note .micro-note')).toContainText('seed 43');
 });
