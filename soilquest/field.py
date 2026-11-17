@@ -3,6 +3,8 @@ import numpy as np
 FAMILIES={'train':['smooth','multiple','background'],'test':['narrow','directional']}
 
 def generate(seed=41,family='narrow',n=18):
+    if isinstance(seed,(bool,np.bool_)) or not isinstance(seed,(int,np.integer)) or not 0<=seed<=100000:raise ValueError('seed must be an integer from 0 to 100000')
+    seed=int(seed)
     if family not in sum(FAMILIES.values(),[]): raise ValueError('unknown field family')
     if isinstance(n,(bool,np.bool_)) or not isinstance(n,(int,np.integer)) or not 10<=n<=24: raise ValueError('grid size must be an integer from 10 to 24')
     rng=np.random.default_rng(seed); x,y=np.meshgrid(np.linspace(0,100,n),np.linspace(0,100,n)); z=np.full_like(x,12.)
